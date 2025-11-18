@@ -3,14 +3,16 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { PostForm } from '@/components/PostForm';
+import { PhotoUploadForm } from '@/components/PhotoUploadForm';
 import { BlogForm } from '@/components/BlogForm';
 
 export default function AdminPage() {
-  const [postMessage, setPostMessage] = useState<string | null>(null);
+  const [momentMessage, setMomentMessage] = useState<string | null>(null);
+  const [photoMessage, setPhotoMessage] = useState<string | null>(null);
   const [blogMessage, setBlogMessage] = useState<string | null>(null);
 
-  const handlePostSubmit = async (formData: FormData) => {
-    setPostMessage(null);
+  const handleMomentSubmit = async (formData: FormData) => {
+    setMomentMessage(null);
     const response = await fetch('/api/posts', {
       method: 'POST',
       body: formData
@@ -21,7 +23,26 @@ export default function AdminPage() {
       throw new Error(error ?? 'Unable to save moment');
     }
 
-    setPostMessage('Travel moment saved. It now appears in the gallery and destination views.');
+    setMomentMessage('Travel moment saved. It now appears in the gallery and destination views.');
+  };
+
+  const handlePhotoSubmit = async (formData: FormData) => {
+    setPhotoMessage(null);
+    const response = await fetch('/api/photos', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      const { error } = await response.json();
+      throw new Error(error ?? 'Unable to upload photo');
+    }
+
+    const uploadType = formData.get('uploadType');
+    const message = uploadType === 'destination'
+      ? 'Photo uploaded to destination successfully.'
+      : 'Photo uploaded to gallery successfully.';
+    setPhotoMessage(message);
   };
 
   const handleBlogSubmit = async (formData: FormData) => {
@@ -44,7 +65,7 @@ export default function AdminPage() {
       <section className="page-hero">
         <p className="eyebrow">Admin</p>
         <h1>Offbeat Odyssey Studio</h1>
-        <p>Manage gallery moments and stories from one dashboard.</p>
+        <p>Manage gallery moments, photos, and stories from one dashboard.</p>
         <div className="panel-actions">
           <Link href="/" className="link-button secondary">
             Back to site
@@ -55,17 +76,27 @@ export default function AdminPage() {
       <section className="landing-panel">
         <header>
           <p className="eyebrow">Travel moments</p>
-          <h2>Add a new destination photo</h2>
-          <p>Uploads save to the gallery, automatically creating destination albums based on the location you enter.</p>
+          <h2>Add a travel moment</h2>
+          <p>Create a complete travel memory with full details: traveler name, location, description, mood, and photo. This creates a destination album if the location is new.</p>
         </header>
-        <PostForm onSubmit={handlePostSubmit} />
-        {postMessage && <p className="success-message">{postMessage}</p>}
+        <PostForm onSubmit={handleMomentSubmit} />
+        {momentMessage && <p className="success-message">{momentMessage}</p>}
+      </section>
+
+      <section className="landing-panel">
+        <header>
+          <p className="eyebrow">Photo upload</p>
+          <h2>Upload a photo</h2>
+          <p>Quickly add a photo to the gallery or to an existing destination. Choose where to upload and select a destination if needed.</p>
+        </header>
+        <PhotoUploadForm onSubmit={handlePhotoSubmit} />
+        {photoMessage && <p className="success-message">{photoMessage}</p>}
       </section>
 
       <section className="landing-panel">
         <header>
           <p className="eyebrow">Blog</p>
-          <h2>Publish a story</h2>
+          <h2>Publish a blog story</h2>
           <p>Share field notes, itineraries, or creative prompts. Images appear at the top of the blog card.</p>
         </header>
         <BlogForm onSubmit={handleBlogSubmit} />

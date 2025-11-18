@@ -660,3 +660,44 @@ button[disabled] {
     justify-content: center;
   }
 }
+
+.photo-upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.photo-upload-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.photo-upload-form select {
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  padding: 14px 16px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #fdfdfd;
+}
+
+.photo-upload-form button {
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #111729;
+  color: white;
+  align-self: flex-start;
+}
+
+.photo-upload-form button[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
