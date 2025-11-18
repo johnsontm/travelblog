@@ -8,7 +8,6 @@ const defaultForm: PostFormFields = {
   title: '',
   location: '',
   description: '',
-  photoUrl: '',
   travelDate: new Date().toISOString().slice(0, 10),
   tags: [],
   mood: 'nature',

@@ -1,5 +1,5 @@
 'use client';
-
+// ...existing code...
 import useSWR from 'swr';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -204,3 +204,4 @@ export default function HomePage() {
     </>
   );
 }
+// ...existing code...

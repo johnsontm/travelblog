@@ -1,3 +1,5 @@
+// src/types/post.ts
+
 export type Post = {
   id: string;
   traveler: string;
@@ -12,6 +14,7 @@ export type Post = {
   weather: string;
 };
 
+// PostFormFields represents data from the form (before photoUrl is generated)
 export type PostFormFields = Pick<
   Post,
   'traveler' | 'title' | 'location' | 'description' | 'travelDate' | 'tags' | 'mood' | 'weather'
